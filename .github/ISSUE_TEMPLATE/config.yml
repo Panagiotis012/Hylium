@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Hylium Core Security Policy
+    url: https://github.com/hylium/hylium/blob/master/SECURITY.md
+    about: View security policy
+  - name: Hylium Core Developers
+    url: https://hyliumcore.org
+    about: Hylium Core homepage

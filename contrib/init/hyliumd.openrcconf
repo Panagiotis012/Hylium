@@ -1,0 +1,33 @@
+# /etc/conf.d/hyliumd: config file for /etc/init.d/hyliumd
+
+# Config file location
+#HYLIUMD_CONFIGFILE="/etc/hylium/hylium.conf"
+
+# What directory to write pidfile to?  (created and owned by $HYLIUMD_USER)
+#HYLIUMD_PIDDIR="/var/run/hyliumd"
+
+# What filename to give the pidfile
+#HYLIUMD_PIDFILE="${HYLIUMD_PIDDIR}/hyliumd.pid"
+
+# Where to write hyliumd data (be mindful that the blockchain is large)
+#HYLIUMD_DATADIR="/var/lib/hyliumd"
+
+# User and group to own hyliumd process
+#HYLIUMD_USER="hylium"
+#HYLIUMD_GROUP="hylium"
+
+# Path to hyliumd executable
+#HYLIUMD_BIN="/usr/bin/hyliumd"
+
+# Nice value to run hyliumd under
+#HYLIUMD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#HYLIUMD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for hyliumd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+HYLIUMD_SIGTERM_TIMEOUT=600

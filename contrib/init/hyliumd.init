@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+#  hyliumd The hylium core server.
+#
+#
+# chkconfig: 345 80 20
+# description: hyliumd
+# processname: hyliumd
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/hyliumd, see below
+if [ -f /etc/sysconfig/hyliumd ]; then
+        . /etc/sysconfig/hyliumd
+fi
+
+RETVAL=0
+
+prog=hyliumd
+# you can override the lockfile via HYLIUMD_LOCKFILE in /etc/sysconfig/hyliumd
+lockfile=${HYLIUMD_LOCKFILE-/var/lock/subsys/hyliumd}
+
+# hyliumd defaults to /usr/bin/hyliumd, override with HYLIUMD_BIN
+hyliumd=${HYLIUMD_BIN-/usr/bin/hyliumd}
+
+# hyliumd opts default to -disablewallet, override with HYLIUMD_OPTS
+hyliumd_opts=${HYLIUMD_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $hyliumd $hyliumd_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog -t600
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
