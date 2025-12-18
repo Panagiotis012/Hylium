@@ -1,10 +1,14 @@
 Hylium Core integration/staging tree
 =====================================
 
-https://hyliumcore.org
+Hylium Core is a renamed, forward-looking fork of Bitcoin Core. It inherits the
+Bitcoin protocol implementation and hardens it for a separate network (different
+message start bytes, ports, address prefixes, and seeds) so it will not
+cross-talk with Bitcoin nodes. Branding is Hylium; codebase heritage is Bitcoin
+Core (MIT license).
 
 For an immediately usable, binary version of the Hylium Core software, see
-https://hyliumcore.org/en/download/.
+https://hyliumcore.org/en/download/ (when available).
 
 What is Hylium Core?
 ---------------------
@@ -12,6 +16,19 @@ What is Hylium Core?
 Hylium Core connects to the Hylium peer-to-peer network to download and fully
 validate blocks and transactions. It also includes a wallet and graphical user
 interface, which can be optionally built.
+
+Network parameters (Hylium):
+- P2P/RPC ports: mainnet 9333/9332, testnet3 19335/19332, testnet4 29333/29332, regtest 39444/39443.
+- Message start bytes: mainnet f3c2e1b0, testnet3 a39c876e, testnet4 b3a17f55, regtest c1d2e3f4.
+- bech32 HRP: `hyl` (main), `thyl` (test), `rhyl` (regtest).
+- Base58 prefixes: P2PKH 38, P2SH 53, WIF 176 (mainnet).
+- Seeds: placeholders `seed1.hylium.org`, `seed2.hylium.org` (replace with live nodes before public launch).
+
+Roadmap highlights (work-in-progress):
+- Fast sync via assumeUTXO snapshots (to be produced/published for Hylium).
+- Privacy-first payment flows (PayJoin/Silent Payments) and better relay policies.
+- Vault-style spending policies for safer hot wallets.
+- L2-friendly fee/policy tuning for channels.
 
 Further information about Hylium Core is available in the [doc folder](/doc).
 

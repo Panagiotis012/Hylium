@@ -1,6 +1,10 @@
 Hylium Core
 =============
 
+Hylium Core is a fork of Bitcoin Core. It reuses the Bitcoin protocol
+implementation under the MIT license while running a distinct Hylium network
+(separate genesis block, message start, ports, and address prefixes).
+
 Setup
 ---------------------
 Hylium Core is the original Hylium client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Hylium transactions, which requires several hundred gigabytes or more of disk space. Depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to several days or more.

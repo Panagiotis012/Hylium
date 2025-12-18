@@ -1,0 +1,7 @@
+regtest=1
+server=1
+fallbackfee=0.00001
+natpmp=0
+
+[regtest]
+wallet=dev

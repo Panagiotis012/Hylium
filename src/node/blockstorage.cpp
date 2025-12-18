@@ -958,6 +958,7 @@ bool BlockManager::WriteBlockUndo(const CBlockUndo& blockundo, BlockValidationSt
 
             // Write index header
             fileout << GetParams().MessageStart() << blockundo_size;
+            // Store undo position as payload start (after storage header).
             pos.nPos += STORAGE_HEADER_BYTES;
             {
                 // Calculate checksum
@@ -1057,7 +1058,9 @@ BlockManager::ReadRawBlockResult BlockManager::ReadRawBlock(const FlatFilePos& p
         LogError("Failed for %s while reading raw block storage header", pos.ToString());
         return util::Unexpected{ReadRawError::IO};
     }
-    AutoFile filein{OpenBlockFile({pos.nFile, pos.nPos - STORAGE_HEADER_BYTES}, /*fReadOnly=*/true)};
+    FlatFilePos header_pos{pos};
+    header_pos.nPos -= STORAGE_HEADER_BYTES;
+    AutoFile filein{OpenBlockFile(header_pos, /*fReadOnly=*/true)};
     if (filein.IsNull()) {
         LogError("OpenBlockFile failed for %s while reading raw block", pos.ToString());
         return util::Unexpected{ReadRawError::IO};
@@ -1068,6 +1071,7 @@ BlockManager::ReadRawBlockResult BlockManager::ReadRawBlock(const FlatFilePos& p
         unsigned int blk_size;
 
         filein >> blk_start >> blk_size;
+        const unsigned int disk_size{blk_size};
 
         if (blk_start != GetParams().MessageStart()) {
             LogError("Block magic mismatch for %s: %s versus expected %s while reading raw block",
@@ -1081,16 +1085,33 @@ BlockManager::ReadRawBlockResult BlockManager::ReadRawBlock(const FlatFilePos& p
             return util::Unexpected{ReadRawError::IO};
         }
 
+        // Seek to the payload start (pos) before reading block bytes.
+        filein.seek(pos.nPos, SEEK_SET);
+
+        size_t read_offset{0};
+        size_t read_size{blk_size};
         if (block_part) {
             const auto [offset, size]{*block_part};
             if (size == 0 || offset >= blk_size || size > blk_size - offset) {
                 return util::Unexpected{ReadRawError::BadPartRange}; // Avoid logging - offset/size come from untrusted REST input
             }
             filein.seek(offset, SEEK_CUR);
-            blk_size = size;
+            read_offset = offset;
+            read_size = size;
         }
 
-        std::vector<std::byte> data(blk_size); // Zeroing of memory is intentional here
+        const uint64_t payload_seek = static_cast<uint64_t>(pos.nPos) + read_offset;
+        LogDebug(BCLog::BLOCKSTORAGE,
+                 "ReadRawBlock pos=%s header_pos=%s magic=%s disk_size=%u payload_seek=%u read_offset=%u read_size=%u\n",
+                 pos.ToString(),
+                 header_pos.ToString(),
+                 HexStr(blk_start),
+                 disk_size,
+                 static_cast<unsigned int>(payload_seek),
+                 static_cast<unsigned int>(read_offset),
+                 static_cast<unsigned int>(read_size));
+
+        std::vector<std::byte> data(read_size); // Zeroing of memory is intentional here
         filein.read(data);
         return data;
     } catch (const std::exception& e) {
@@ -1107,6 +1128,8 @@ FlatFilePos BlockManager::WriteBlock(const CBlock& block, int nHeight)
         LogError("FindNextBlockPos failed for %s while writing block", pos.ToString());
         return FlatFilePos();
     }
+    const FlatFilePos header_pos{pos};
+    const bool log_first_block{header_pos.nFile == 0 && header_pos.nPos == 0};
     AutoFile file{OpenBlockFile(pos, /*fReadOnly=*/false)};
     if (file.IsNull()) {
         LogError("OpenBlockFile failed for %s while writing block", pos.ToString());
@@ -1118,6 +1141,7 @@ FlatFilePos BlockManager::WriteBlock(const CBlock& block, int nHeight)
 
         // Write index header
         fileout << GetParams().MessageStart() << block_size;
+        // Store block position as payload start (after storage header).
         pos.nPos += STORAGE_HEADER_BYTES;
         // Write block
         fileout << TX_WITH_WITNESS(block);
@@ -1127,6 +1151,43 @@ FlatFilePos BlockManager::WriteBlock(const CBlock& block, int nHeight)
         LogError("Failed to close block file %s: %s", pos.ToString(), SysErrorString(errno));
         m_opts.notifications.fatalError(_("Failed to close file when writing block."));
         return FlatFilePos();
+    }
+
+    LogDebug(BCLog::BLOCKSTORAGE,
+             "WriteBlock blk%05u header_pos=%s payload_pos=%s payload_size=%u\n",
+             header_pos.nFile, header_pos.ToString(), pos.ToString(), block_size);
+    if (log_first_block) {
+#ifdef DEBUG
+        if (LogAcceptCategory(BCLog::BLOCKSTORAGE, BCLog::Level::Debug)) {
+            AutoFile header_file{OpenBlockFile(header_pos, /*fReadOnly=*/true)};
+            if (!header_file.IsNull()) {
+                try {
+                    MessageStartChars disk_magic;
+                    unsigned int disk_size{0};
+                    header_file >> disk_magic >> disk_size;
+                    const bool magic_ok{disk_magic == GetParams().MessageStart()};
+                    const bool size_ok{disk_size <= MAX_SIZE};
+                    LogDebug(BCLog::BLOCKSTORAGE,
+                             "WriteBlock blk%05u header bytes: magic=%s size=%u (magic_ok=%d size_ok=%d)\n",
+                             header_pos.nFile, HexStr(disk_magic), disk_size, magic_ok, size_ok);
+                    if (magic_ok && size_ok && disk_size > 0) {
+                        const size_t sample_len = disk_size < 16 ? disk_size : 16;
+                        std::vector<std::byte> sample(sample_len);
+                        header_file.read(sample);
+                        LogDebug(BCLog::BLOCKSTORAGE,
+                                 "WriteBlock blk%05u payload sample(%u)=%s\n",
+                                 header_pos.nFile,
+                                 static_cast<unsigned int>(sample_len),
+                                 HexStr(MakeUCharSpan(sample)));
+                    }
+                } catch (const std::exception& e) {
+                    LogDebug(BCLog::BLOCKSTORAGE,
+                             "WriteBlock blk%05u header read failed at %s: %s\n",
+                             header_pos.nFile, header_pos.ToString(), e.what());
+                }
+            }
+        }
+#endif
     }
 
     return pos;

@@ -380,7 +380,8 @@ public:
      * @param[in]  block        the block to be stored
      * @param[in]  nHeight      the height of the block
      *
-     * @returns in case of success, the position to which the block was written to
+     * @returns in case of success, the position of the serialized block payload
+     *          (immediately after the 8-byte storage header)
      *          in case of an error, an empty FlatFilePos
      */
     FlatFilePos WriteBlock(const CBlock& block, int nHeight);
@@ -389,7 +390,7 @@ public:
      *
      * @param[in]  block        the block being processed
      * @param[in]  nHeight      the height of the block
-     * @param[in]  pos          the position of the serialized CBlock on disk
+     * @param[in]  pos          the position of the serialized CBlock payload on disk
      */
     void UpdateBlockInfo(const CBlock& block, unsigned int nHeight, const FlatFilePos& pos);
 

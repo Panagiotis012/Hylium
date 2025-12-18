@@ -21,7 +21,7 @@ using util::Join;
  * for both hyliumd and hylium-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string UA_NAME("Satoshi");
+const std::string UA_NAME("Hylium");
 
 
 #include <hylium-build-info.h>

@@ -10,17 +10,18 @@ to addrman with).
 
 Update `MIN_BLOCKS` in  `makeseeds.py` and the `-m`/`--minblocks` arguments below, as needed.
 
-The seeds compiled into the release are created from sipa's and achow101's
-DNS seed, virtu's crawler, and asmap community AS map data. Run the following commands
-from the `/contrib/seeds` directory:
+Hylium is a fork of Bitcoin Core, so the seed list must be generated from Hylium's
+own crawlers and DNS seeds. The commands below use placeholder domains; replace
+them with real Hylium seed endpoints before releasing.
+
+Run the following commands from the `/contrib/seeds` directory:
 
 ```
-curl https://hylium.sipa.be/seeds.txt.gz | gzip -dc > seeds_main.txt
-curl https://21.ninja/seeds.txt.gz | gzip -dc >> seeds_main.txt
-curl https://mainnet.achownodes.xyz/seeds.txt.gz | gzip -dc >> seeds_main.txt
-curl https://signet.achownodes.xyz/seeds.txt.gz | gzip -dc > seeds_signet.txt
-curl https://testnet.achownodes.xyz/seeds.txt.gz | gzip -dc > seeds_test.txt
-curl https://testnet4.achownodes.xyz/seeds.txt.gz | gzip -dc > seeds_testnet4.txt
+curl https://seed1.hylium.org/seeds.txt.gz | gzip -dc > seeds_main.txt
+curl https://seed2.hylium.org/seeds.txt.gz | gzip -dc >> seeds_main.txt
+curl https://seed.signet.hylium.org/seeds.txt.gz | gzip -dc > seeds_signet.txt
+curl https://seed.testnet.hylium.org/seeds.txt.gz | gzip -dc > seeds_test.txt
+curl https://seed.testnet4.hylium.org/seeds.txt.gz | gzip -dc > seeds_testnet4.txt
 curl https://raw.githubusercontent.com/asmap/asmap-data/main/latest_asmap.dat > asmap-filled.dat
 python3 makeseeds.py -a asmap-filled.dat -s seeds_main.txt > nodes_main.txt
 python3 makeseeds.py -a asmap-filled.dat -s seeds_signet.txt -m 266000 > nodes_signet.txt

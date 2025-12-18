@@ -26,3 +26,16 @@ target/
 /guix-build-*
 
 /ci/scratch/
+
+# CTest
+Testing/Temporary/
+Testing/LastTest.log
+
+# local config
+hylium.conf
+# CTest / Testing junk
+/Testing/
+/CTestTestfile.cmake
+/DartConfiguration.tcl
+# Local config
+hylium.conf
