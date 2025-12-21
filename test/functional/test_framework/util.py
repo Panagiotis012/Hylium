@@ -19,6 +19,7 @@ import re
 import shlex
 import time
 import types
+import time
 
 from . import coverage
 from .authproxy import AuthServiceProxy, JSONRPCException
@@ -33,6 +34,14 @@ logger = logging.getLogger("TestFramework.utils")
 # Assert functions
 ##################
 
+
+def wait_until(predicate, *, timeout=60, poll=0.05, desc=None):
+    end = time.time() + timeout
+    while time.time() < end:
+        if predicate():
+            return True
+        time.sleep(poll)
+    raise AssertionError(f"wait_until() timed out after {timeout}s" + (f": {desc}" if desc else ""))
 
 def assert_approx(v, vexp, vspan=0.00001):
     """Assert that `v` is within `vspan` of `vexp`"""

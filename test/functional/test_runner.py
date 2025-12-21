@@ -88,10 +88,13 @@ EXTENDED_SCRIPTS = [
 ]
 
 BASE_SCRIPTS = [
+    'feature_hylium_reorg_basic.py',
     # Scripts that are run by default.
     # Longest test should go first, to favor running tests in parallel
     # vv Tests less than 5m vv
     'feature_fee_estimation.py',
+    'feature_hylium_devnet_smoke.py',
+    'feature_hylium_p2p_propagation.py',
     'feature_taproot.py',
     'feature_block.py',
     'mempool_ephemeral_dust.py',
