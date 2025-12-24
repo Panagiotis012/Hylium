@@ -31,7 +31,7 @@ jobs:
             build-essential cmake ninja-build pkgconf \
             libevent-dev libboost-dev libsqlite3-dev \
             libzmq3-dev libcapnp-dev capnproto \
-            systemtap-sdt-dev python3
+            systemtap-sdt-dev python3 python3-zmq
 
       - name: Configure
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=OFF
@@ -45,12 +45,11 @@ jobs:
 
       - name: Run functional tests (subset)
         run: |
-          # Copy tests to build directory for execution
-          cp -r test/functional/*.py build/test/functional/
-          # Run critical tests
-          python3 test/functional/feature_hylium_devnet_smoke.py
-          python3 test/functional/feature_hylium_security_check.py
-          python3 test/functional/feature_hylium_mining_basic.py
+          # Run critical tests using test_runner and build config
+          python3 test/functional/test_runner.py --configfile=build/test/config.ini \
+            feature_hylium_devnet_smoke.py \
+            feature_hylium_security_check.py \
+            feature_hylium_mining_basic.py
 
   build-macos:
     name: macOS Build
@@ -64,6 +63,8 @@ jobs:
       - name: Install dependencies
         run: |
           brew install cmake ninja pkg-config boost libevent zeromq sqlite capnp
+          # Install python dependencies
+          pip3 install pyzmq --break-system-packages
 
       - name: Configure
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=OFF
