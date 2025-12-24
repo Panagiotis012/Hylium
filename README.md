@@ -8,7 +8,7 @@ cross-talk with Bitcoin nodes. Branding is Hylium; codebase heritage is Bitcoin
 Core (MIT license).
 
 For an immediately usable, binary version of the Hylium Core software, see
-https://hyliumcore.org/en/download/ (when available).
+https://hyliumcore.org/en/download/ (**Note: Official releases not yet available - project in development**).
 
 What is Hylium Core?
 ---------------------
@@ -22,13 +22,31 @@ Network parameters (Hylium):
 - Message start bytes: mainnet f3c2e1b0, testnet3 a39c876e, testnet4 b3a17f55, regtest c1d2e3f4.
 - bech32 HRP: `hyl` (main), `thyl` (test), `rhyl` (regtest).
 - Base58 prefixes: P2PKH 38, P2SH 53, WIF 176 (mainnet).
-- Seeds: placeholders `seed1.hylium.org`, `seed2.hylium.org` (replace with live nodes before public launch).
+- Seeds: **PLACEHOLDER** - `seed1.hylium.org`, `seed2.hylium.org` must be replaced with live nodes before mainnet launch.
 
-Roadmap highlights (work-in-progress):
-- Fast sync via assumeUTXO snapshots (to be produced/published for Hylium).
-- Privacy-first payment flows (PayJoin/Silent Payments) and better relay policies.
-- Vault-style spending policies for safer hot wallets.
-- L2-friendly fee/policy tuning for channels.
+## Current Network Status
+
+**TESTNET PHASE** - Hylium is currently in testnet/development phase. Mainnet has not launched yet.
+- Mainnet seed nodes are placeholders and not operational
+- Use testnet3 (`-testnet` flag) or regtest (`-regtest`) for testing
+- **DO NOT** use this for real value until mainnet is officially announced
+
+Future roadmap (work-in-progress):
+- Fast sync via assumeUTXO snapshots (to be produced/published for Hylium)
+- Privacy-first payment flows (PayJoin/Silent Payments) and better relay policies
+- Vault-style spending policies for safer hot wallets
+- L2-friendly fee/policy tuning for channels
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Whitepaper](doc/WHITEPAPER.md) | Technical design and monetary policy |
+| [Roadmap](ROADMAP.md) | Development phases and milestones |
+| [Security Policy](SECURITY.md) | Vulnerability reporting guidelines |
+| [Testing Guide](doc/testing.md) | How to run tests |
+| [Consensus Rules](doc/consensus.md) | Detailed consensus specification |
+| [Build Guides](doc/) | Platform-specific build instructions |
 
 Further information about Hylium Core is available in the [doc folder](/doc).
 

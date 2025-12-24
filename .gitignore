@@ -44,3 +44,33 @@ hylium.conf
 /DartConfiguration.tcl
 # Local config
 hylium.conf
+
+# Security-sensitive files
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Wallet and blockchain data
+wallet.dat
+wallet.dat.*
+peers.dat
+banlist.dat
+anchors.dat
+fee_estimates.dat
+mempool.dat
+*.log
+debug.log
+db.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/

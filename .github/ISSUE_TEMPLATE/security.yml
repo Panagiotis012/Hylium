@@ -1,0 +1,79 @@
+name: Security Vulnerability
+description: Report a potential security vulnerability (DO NOT use for public disclosure)
+title: "[SECURITY] "
+labels: ["security", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ⚠️ STOP - READ THIS FIRST ⚠️
+        
+        **If this is a critical security vulnerability, DO NOT open a public issue.**
+        
+        Instead, please report it privately via email to: **security@hylium.org**
+        
+        See our [Security Policy](../SECURITY.md) for details on responsible disclosure.
+        
+        ---
+        
+        This form is ONLY for:
+        - Minor security concerns that are not actively exploitable
+        - Questions about security best practices
+        - Security documentation improvements
+        
+  - type: checkboxes
+    id: confirm-non-critical
+    attributes:
+      label: Security Confirmation
+      description: Please confirm this is appropriate for public disclosure
+      options:
+        - label: I confirm this is NOT a critical vulnerability that could be exploited
+          required: true
+        - label: I have read the [Security Policy](../SECURITY.md)
+          required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity Assessment
+      description: How severe do you believe this issue is?
+      options:
+        - Low (Minor issue, theoretical only)
+        - Medium (Requires specific conditions)
+        - Documentation (Security docs improvement)
+        - Question (Security best practices)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the security concern
+      placeholder: Please provide details about the security concern...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce (if applicable)
+      description: How can this be reproduced?
+      placeholder: |
+        1. ...
+        2. ...
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Fix
+      description: If you have ideas for how to address this, please share
+      placeholder: Optional - your suggestions for resolution
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to help?
+      options:
+        - label: I would be willing to submit a PR to fix this issue
