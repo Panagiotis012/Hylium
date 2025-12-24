@@ -114,9 +114,12 @@ cmake --build build
 
 ### Windows (Cross-compile from Linux)
 ```bash
-# Requires mingw-w64
+# 1. Build dependencies (takes time)
+make -C depends HOST=x86_64-w64-mingw32
+
+# 2. Build Hylium using the generated toolchain
 cmake -B build -G Ninja \
-  -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain/win64.cmake \
+  -DCMAKE_TOOLCHAIN_FILE=depends/x86_64-w64-mingw32/toolchain.cmake \
   -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
