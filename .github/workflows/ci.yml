@@ -28,21 +28,26 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            build-essential cmake ninja-build \
+            build-essential cmake ninja-build pkgconf \
             libevent-dev libboost-dev libsqlite3-dev \
-            libzmq3-dev python3
+            libzmq3-dev libcapnp-dev capnproto \
+            systemtap-sdt-dev python3
 
       - name: Configure
-        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=OFF
 
       - name: Build
         run: cmake --build build -j$(nproc)
 
       - name: Run unit tests
-        run: ./build/bin/test_hylium
+        run: |
+          ctest --test-dir build --output-on-failure -j$(nproc)
 
       - name: Run functional tests (subset)
         run: |
+          # Copy tests to build directory for execution
+          cp -r test/functional/*.py build/test/functional/
+          # Run critical tests
           python3 test/functional/feature_hylium_devnet_smoke.py
           python3 test/functional/feature_hylium_security_check.py
           python3 test/functional/feature_hylium_mining_basic.py
@@ -58,10 +63,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          brew install cmake ninja boost libevent zeromq
+          brew install cmake ninja pkg-config boost libevent zeromq sqlite capnp
 
       - name: Configure
-        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=OFF
 
       - name: Build
         run: cmake --build build -j$(sysctl -n hw.logicalcpu)
