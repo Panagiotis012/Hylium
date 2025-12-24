@@ -45,8 +45,8 @@ jobs:
 
       - name: Run functional tests (subset)
         run: |
-          # Run critical tests using test_runner and build config
-          python3 test/functional/test_runner.py --configfile=build/test/config.ini \
+          # Run critical tests using test_runner from build directory (so it finds config.ini)
+          python3 build/test/functional/test_runner.py \
             feature_hylium_devnet_smoke.py \
             feature_hylium_security_check.py \
             feature_hylium_mining_basic.py
