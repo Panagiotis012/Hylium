@@ -20,7 +20,7 @@ concurrency:
 env:
   CI_FAILFAST_TEST_LEAVE_DANGLING: 1  # GHA does not care about dangling processes and setting this variable avoids killing the CI script itself on error
   CIRRUS_CACHE_HOST: http://127.0.0.1:12321/ # When using Cirrus Runners this host can be used by the docker `gha` build cache type.
-  REPO_USE_CIRRUS_RUNNERS: 'hylium/hylium' # Use cirrus runners and cache for this repo, instead of falling back to the slow GHA runners
+  REPO_USE_CIRRUS_RUNNERS: 'Panagiotis012/Hylium' # Use cirrus runners and cache for this repo, instead of falling back to the slow GHA runners
 
 defaults:
   run:
@@ -330,10 +330,13 @@ jobs:
       - name: Clone corpora
         if: matrix.job-type == 'fuzz'
         run: |
-          git clone --depth=1 https://github.com/hylium-core/qa-assets "${RUNNER_TEMP}/qa-assets"
-          cd "${RUNNER_TEMP}/qa-assets"
-          echo "Using qa-assets repo from commit ..."
-          git log -1
+          # TODO: Create hylium-core/qa-assets repository or use alternative corpora source
+          # git clone --depth=1 https://github.com/hylium-core/qa-assets "${RUNNER_TEMP}/qa-assets"
+          # cd "${RUNNER_TEMP}/qa-assets"
+          # echo "Using qa-assets repo from commit ..."
+          # git log -1
+          echo "Skipping qa-assets clone - repository not yet created"
+          mkdir -p "${RUNNER_TEMP}/qa-assets/fuzz_corpora"
 
       - name: Run fuzz tests
         if: matrix.job-type == 'fuzz'
