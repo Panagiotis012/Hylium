@@ -10,8 +10,9 @@ const TrustFooter = () => {
 
     return (
         <section style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(10px)',
+            borderTop: '1px solid rgba(0, 0, 0, 0.05)',
             position: 'fixed',
             bottom: 0,
             left: 0,
@@ -31,17 +32,17 @@ const TrustFooter = () => {
                         alignItems: 'center',
                         gap: '12px'
                     }}>
-                        <item.icon style={{ width: '24px', height: '24px', color: '#6b7280' }} />
+                        <item.icon style={{ width: '24px', height: '24px', color: '#94a3b8' }} />
                         <div>
                             <p style={{
-                                color: '#4b5563',
+                                color: '#94a3b8',
                                 fontSize: '11px',
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.05em'
                             }}>
                                 {item.label}
                             </p>
-                            <p style={{ color: 'white', fontWeight: 600 }}>{item.value}</p>
+                            <p style={{ color: '#0f172a', fontWeight: 600 }}>{item.value}</p>
                         </div>
                     </div>
                 ))}

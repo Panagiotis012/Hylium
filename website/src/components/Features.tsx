@@ -1,50 +1,49 @@
+import { Zap, Shield, Globe, Cpu } from 'lucide-react';
 
-import React from 'react';
-import { Shield, Zap, Globe, Cpu } from 'lucide-react';
-import './Features.css';
+const Features = () => {
+    const features = [
+        { icon: Zap, title: 'Lightning Fast', desc: 'Process thousands of transactions per second with minimal latency.' },
+        { icon: Shield, title: 'Secure by Design', desc: 'Enterprise-grade security with multi-layer protection.' },
+        { icon: Globe, title: 'Global Network', desc: 'Decentralized infrastructure across multiple continents.' },
+        { icon: Cpu, title: 'Smart Contracts', desc: 'Deploy and execute energy trading contracts seamlessly.' },
+    ];
 
-const featuresData = [
-    {
-        icon: <Shield size={32} />,
-        title: "Secure by Design",
-        description: "Built on advanced cryptographic principles ensuring your assets remain safe at all times."
-    },
-    {
-        icon: <Zap size={32} />,
-        title: "Lightning Fast",
-        description: "Experience transaction speeds that rival centralized systems without compromising decentralization."
-    },
-    {
-        icon: <Globe size={32} />,
-        title: "Global Network",
-        description: "Join a distributed network of miners and validators across over 100 countries."
-    },
-    {
-        icon: <Cpu size={32} />,
-        title: "Efficient Mining",
-        description: "Optimized algorithms allow for mining on consumer hardware with minimal energy waste."
-    }
-];
-
-const Features: React.FC = () => {
     return (
-        <section className="features-section" id="features">
-            <div className="features-container">
-                <div className="section-header">
-                    <h2 className="section-title">Key Features</h2>
-                    <p className="section-subtitle">Why Hylium is the choice for the next generation.</p>
-                </div>
-
-                <div className="features-grid">
-                    {featuresData.map((feature, index) => (
-                        <div className="feature-card" key={index}>
-                            <div className="feature-icon">{feature.icon}</div>
-                            <h3 className="feature-title">{feature.title}</h3>
-                            <p className="feature-description">{feature.description}</p>
+        <section id="ecosystem" style={{ padding: '80px 24px', background: '#ffffff' }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                <h2 style={{ textAlign: 'center', fontSize: '32px', fontWeight: 700, color: '#0f172a', marginBottom: '16px' }}>
+                    Why Choose Hylium?
+                </h2>
+                <p style={{ textAlign: 'center', color: '#64748b', marginBottom: '48px', maxWidth: '600px', marginLeft: 'auto', marginRight: 'auto' }}>
+                    Built for the future of decentralized energy trading
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px' }}>
+                    {features.map((f, i) => (
+                        <div key={i} style={{
+                            background: '#f8fafc',
+                            borderRadius: '16px',
+                            padding: '32px',
+                            textAlign: 'center',
+                        }}>
+                            <div style={{
+                                width: '56px',
+                                height: '56px',
+                                borderRadius: '12px',
+                                background: 'linear-gradient(135deg, #00d4ff 0%, #0891b2 100%)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                margin: '0 auto 16px',
+                            }}>
+                                <f.icon size={28} color="white" />
+                            </div>
+                            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#0f172a', marginBottom: '8px' }}>{f.title}</h3>
+                            <p style={{ color: '#64748b', fontSize: '14px', lineHeight: 1.6 }}>{f.desc}</p>
                         </div>
                     ))}
                 </div>
             </div>
+            <style>{`@media (max-width: 900px) { section > div > div:last-child { grid-template-columns: repeat(2, 1fr) !important; } }`}</style>
         </section>
     );
 };

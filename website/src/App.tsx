@@ -1,14 +1,22 @@
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import TrustFooter from './components/TrustFooter';
+import Stats from './components/Stats';
+import Features from './components/Features';
+import Roadmap from './components/Roadmap';
+import Newsletter from './components/Newsletter';
+import Footer from './components/Footer';
 import './index.css';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0c] via-[#0d0d12] to-[#0a0a14]">
+    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <Navbar />
       <Hero />
-      <TrustFooter />
+      <Stats />
+      <Features />
+      <Roadmap />
+      <Newsletter />
+      <Footer />
     </div>
   );
 }

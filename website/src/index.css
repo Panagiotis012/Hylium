@@ -1,17 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-/* Custom Theme - Tailwind v4 syntax */
-@theme {
-  --color-hylium-bg: #0a0a0c;
-  --color-hylium-bg-alt: #0d0d12;
-  --color-hylium-cyan: #00f2ea;
-  --color-hylium-cyan-glow: rgba(0, 242, 234, 0.4);
-
-  --font-family-sans: 'Inter', system-ui, sans-serif;
-}
-
-/* Base Styles */
+/* Base Styles - Light Theme */
 * {
   margin: 0;
   padding: 0;
@@ -24,20 +14,23 @@ html {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: linear-gradient(135deg, #0a0a0c 0%, #0d0d12 50%, #0a0a14 100%);
-  color: #ffffff;
+  background: #f8fafc;
+  color: #0f172a;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Remove default link styling */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-/* Custom Glow Effect */
-.glow-cyan {
-  box-shadow: 0 0 30px rgba(0, 242, 234, 0.5), 0 0 60px rgba(0, 242, 234, 0.3);
+/* Sections */
+section {
+  background: #ffffff;
+}
+
+section:nth-child(even) {
+  background: #f8fafc;
 }
